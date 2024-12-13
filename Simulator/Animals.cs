@@ -1,18 +1,53 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Reflection.Emit;
+using System.Xml.Linq;
 
 namespace Simulator;
 
-    public class Animals
-    {
-        public required string Description { get; init; }
-        public uint Size { get; set; } = 3;
+public class Animals
+{
+    private string _description = "Unknown";
 
-    public string Info => $"{Description} <{Size}>";
+    public required string Description 
+    { get => _description; 
+      init
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                _description = "Unknown";
+            }
+            else
+            {
+                value = value.Trim();
 
+                if (value.Length < 3)
+                {
+                    value = value.PadRight(3, '#');
+                }
+                else if (value.Length > 15)
+                {
+                    value = value.Substring(0, 15).TrimEnd();
+                    if (value.Length < 3)
+                    {
+                        value = value.PadRight(3, '#');
+                    }
+                }
+
+                if (char.IsLower(value[0]))
+                {
+                    value = char.ToUpper(value[0]) + value.Substring(1);
+                }
+
+                _description = value;
+            }
+        }
 
     }
+    public uint Size { get; set; } = 3;
+
+ 
+
+    public string Info => $"{Description} <{Size}>";
     
+    
+    
+}
