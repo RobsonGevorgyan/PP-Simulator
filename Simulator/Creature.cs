@@ -1,11 +1,12 @@
 ﻿namespace Simulator;
 
-public class Creature
+public abstract class Creature
 {
     private string _name = "Unknown";
     private int _level = 1;
 
-    // Właściwości z init z walidacją
+
+    public abstract int Power { get; }
     public string Name
     {
         get => _name;
@@ -74,7 +75,7 @@ public class Creature
     public string Info => $"Name: {Name}, Level: {Level}";
 
     // Metoda SayHi()
-    public void SayHi()
+    public virtual void SayHi()
     {
         Console.WriteLine($"Hi! My name is {Name} and I am level {Level}.");
     }
