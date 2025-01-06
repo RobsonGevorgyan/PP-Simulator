@@ -1,68 +1,65 @@
-﻿namespace Simulator;
+﻿using System.Security.Cryptography.X509Certificates;
+
+namespace Simulator;
     internal class Program
     {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("Starting Simulator!\n");
-        Lab4b();        
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Starting Simulator!\n");
+        Lab5a();
+    }
             
         
-        }
-        static void Lab4a()
-        {
-        Console.WriteLine("HUNT TEST\n");
-        var o = new Orc() { Name = "Gorbag", Rage = 7 };
-        o.SayHi();
-        for (int i = 0; i < 10; i++)
-        {
-            o.Hunt();
-            o.SayHi();
-        }
-
-        Console.WriteLine("\nSING TEST\n");
-        var e = new Elf("Legolas", agility: 2);
-        e.SayHi();
-        for (int i = 0; i < 10; i++)
-        {
-            e.Sing();
-            e.SayHi();
-        }
-
-        Console.WriteLine("\nPOWER TEST\n");
-        Creature[] creatures = {
-        o,
-        e,
-        new Orc("Morgash", 3, 8),
-        new Elf("Elandor", 5, 3)
-        };
-        foreach (Creature creature in creatures)
-        {
-            Console.WriteLine($"{creature.Name,-15}: {creature.Power}");
-        }
-
-        Creature c = new Elf("Elandor", 5, 3);
-        Console.WriteLine(c);  // ELF: Elandor [5]
+        
        
-    }
-    static void Lab4b()
+    
+    static void Lab5a()
     {
-        object[] myObjects = {
-        new Animals() { Description = "dogs"},
-        new Birds { Description = "  eagles ", Size = 10 },
-        new Elf("e", 15, -3),
-        new Orc("morgash", 6, 4)
-    };
-        Console.WriteLine("\nMy objects:");
-        foreach (var o in myObjects) Console.WriteLine(o);
-        /*
-            My objects:
-            ANIMALS: Dogs <3>
-            BIRDS: Eagles (fly+) <10>
-            ELF: E## [10][0]
-            ORC: Morgash [6][4]
-        */
-    }
+        var x = new Point(2, 2);
 
+        var y = new Point(3, 4);
+        var z = new Point(17, 18);
+
+
+        var a = new Rectangle(1,1,8,8);
+        Console.WriteLine(a.ToString());
+        Console.WriteLine(a.Contains(x));
+
+
+        var d = new Rectangle(4, 3, 2, 1);
+        Console.WriteLine(d.ToString());
+        Console.WriteLine(d.Contains(x));
+
+        var e = new Rectangle(y, z);
+        Console.WriteLine(e.ToString());
+        Console.WriteLine(e.Contains(x));
+
+        try
+        {
+            var b = new Rectangle(1, 2, 1, 3);
+            Console.WriteLine(b.ToString());
+            Console.WriteLine(b.Contains(x));
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+        try
+
+
+        {
+            var c = new Rectangle(1, 2, 3, 2);
+            Console.WriteLine(c.ToString());
+            Console.WriteLine(c.Contains(x));
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
+
+
+    }
 
 
 
