@@ -10,50 +10,13 @@ public abstract class Creature
     public string Name
     {
         get => _name;
-        init
-        {
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                _name = "Unknown";
-            }
-            else
-            {
-                value = value.Trim();
-
-                if (value.Length < 3)
-                {
-                    value = value.PadRight(3, '#');
-                }
-                else if (value.Length > 25)
-                {
-                    value = value.Substring(0, 25).TrimEnd();
-                    if (value.Length < 3)
-                    {
-                        value = value.PadRight(3, '#');
-                    }
-                }
-
-                if (char.IsLower(value[0]))
-                {
-                    value = char.ToUpper(value[0]) + value.Substring(1);
-                }
-
-                _name = value;
-            }
-        }
+        init => _name = Validator.Shortener(value, 3, 25, '#');
     }
 
     public int Level
     {
         get => _level;
-        set
-        {
-            if (value < 1 || value > 10)
-            {
-                value=10;
-            }
-            _level = value;
-        }
+        set => _level = Validator.Limiter(value, 1, 10);
     }
 
     
@@ -71,10 +34,17 @@ public abstract class Creature
 
     }
 
-    // Właściwość tylko do odczytu Info
-    public string Info => $"Name: {Name}, Level: {Level}";
+   
+    public abstract string Info
+    {
+        get;
+    }
 
-    // Metoda SayHi()
+    public override string ToString()
+    {
+        return $"{GetType().Name.ToUpper()}: {Name} {Info}";
+    }
+
     public virtual void SayHi()
     {
         Console.WriteLine($"Hi! My name is {Name} and I am level {Level}.");

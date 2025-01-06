@@ -9,22 +9,7 @@ public class Elf : Creature
     public int Agility
     {
         get { return _agility; }
-        init
-        {
-            if (_agility < 0)
-            {
-                value = 0;
-            }
-            if (_agility > 10)
-            {
-                value = 10;
-            }
-            else
-            {
-                value = _agility;
-            }
-            _agility = value;
-        }
+        init => _agility = Validator.Limiter(value, 0, 10);
     }
 
     public override int Power
@@ -39,6 +24,8 @@ public class Elf : Creature
     {
         Agility = agility;
     }
+
+    public override string Info => $"[{Level}][{Agility}]";
     public void Sing()
     {
         Console.WriteLine($"{Name} is singing.");
@@ -59,4 +46,8 @@ public class Elf : Creature
             agilityCounter++;
         }
     }
+
+    public override void SayHi() => Console.WriteLine(
+        $"Hi, I'm {Name}, my level is {Level}, my agility is {Agility}."
+    );
 }
