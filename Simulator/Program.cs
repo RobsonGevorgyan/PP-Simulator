@@ -1,4 +1,5 @@
 ﻿using System.Security.Cryptography.X509Certificates;
+using Simulator.Maps;
 
 namespace Simulator;
     internal class Program
@@ -6,13 +7,13 @@ namespace Simulator;
     static void Main(string[] args)
     {
         Console.WriteLine("Starting Simulator!\n");
-        Lab5a();
+        lab5b();
     }
-            
-        
-        
-       
-    
+
+
+
+
+
     static void Lab5a()
     {
         var x = new Point(2, 2);
@@ -21,7 +22,7 @@ namespace Simulator;
         var z = new Point(17, 18);
 
 
-        var a = new Rectangle(1,1,8,8);
+        var a = new Rectangle(1, 1, 8, 8);
         Console.WriteLine(a.ToString());
         Console.WriteLine(a.Contains(x));
 
@@ -56,10 +57,51 @@ namespace Simulator;
         {
             Console.WriteLine(ex.Message);
         }
-
-
-
     }
+    static void lab5b()
+    {
+
+        var a1 = new Point(3, 3);
+        var b1 = new SmallSquareMap(5);
+        var c1 = Direction.Down;
+        Console.WriteLine(b1.Exist(a1));
+        Console.WriteLine(b1.Next(a1, c1));
+        Console.WriteLine(b1.NextDiagonal(a1, c1));
+
+
+        try
+        {
+            var a2 = new Point(24, 8);
+            var b2 = new SmallSquareMap(21);
+            var c2 = Direction.Up;
+            Console.WriteLine(b2.Exist(a2));
+            Console.WriteLine(b2.Next(a2, c2));
+            Console.WriteLine(b2.NextDiagonal(a2, c2));
+        }
+
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
+        try
+        {
+            var a3 = new Point(5, 5);
+            var b3 = new SmallSquareMap(5);
+            var c3 = Direction.Up;
+            Console.WriteLine(b3.Exist(a3));
+            Console.WriteLine(b3.Next(a3, c3));
+            Console.WriteLine(b3.NextDiagonal(a3, c3));
+        }
+
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+
+    
 
 
 
