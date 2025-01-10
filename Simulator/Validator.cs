@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Simulator;
 
-internal class Validator
+public class Validator
 
 {
     public static int Limiter(int value, int min, int max) 
