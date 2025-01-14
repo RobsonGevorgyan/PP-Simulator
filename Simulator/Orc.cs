@@ -1,56 +1,33 @@
-﻿using Simulator;
-using System.ComponentModel;
-using System.Xml.Linq;
+﻿namespace Simulator;
 
 public class Orc : Creature
 {
-    private int rageCounter = 1;
-    private int _rage;
+    private int huntCount = 0;
+    private int rage = 1;
     public int Rage
     {
-        get { return _rage; }
-        init => _rage = Validator.Limiter(value, 0, 10);
+        get { return rage; }
+        init { rage = Validator.Limiter(value, 0, 10); }
     }
 
-    public override int Power
-    {
-        get { return 7 * Level + 3 * Rage; }
-    }
+    public override int Power => 7*Level + 3*rage;
+    public override char Symbol => 'O';
 
-    public Orc()
-    {
-
-    }
-
+    public Orc() { }
     public Orc(string name, int level = 1, int rage = 1) : base(name, level)
     {
         Rage = rage;
     }
 
-    public override string Info => $"[{Level}][{Rage}]";
-
     public void Hunt()
     {
-        Console.WriteLine($"{Name} is hunting.");
-        if (rageCounter == 2)
+        huntCount++;
+        if (huntCount >= 3 && rage < 10)
         {
-            if (Level < 10)
-            {
-                Level++;
-                rageCounter = 1;
-            }
-            else
-            {
-                rageCounter = 1;
-            }
+            rage++;
+            huntCount = 0;
         }
-        else
-        {
-            rageCounter++;
-        }
-
     }
-    public override void SayHi() => Console.WriteLine(
-        $"Hi, I'm {Name}, my level is {Level}, my rage is {Rage}."
-    );
+    public override string Greeting() => $"Hi, I'm {Name}, my level is {Level}, my rage is {Rage}.";
+    public override string Info => $"{Name} [{Level}][{Rage}]";
 }

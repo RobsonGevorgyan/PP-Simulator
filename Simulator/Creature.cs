@@ -1,81 +1,83 @@
-﻿namespace Simulator;
+﻿using Simulator.Maps;
+using System;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 
-public abstract class Creature
+namespace Simulator;
+
+public abstract class Creature : IMappable
 {
-    private string _name = "Unknown";
-    private int _level = 1;
-
+    private string name = "Unknown";
+    private int level = 1;
 
     public abstract int Power { get; }
+    public virtual char Symbol => 'C';
+    public Map? CurrentMap { get; private set; } = null;
+    public Point CreaturePos { get; private set; }
+
     public string Name
     {
-        get => _name;
-        init => _name = Validator.Shortener(value, 3, 25, '#');
+        get { return name; }
+        init { name = Validator.Shortener(value, 3, 25, '#'); }
     }
 
     public int Level
     {
-        get => _level;
-        set => _level = Validator.Limiter(value, 1, 10);
+        get { return level; }
+        init { level = Validator.Limiter(value, 1, 10); }
     }
 
-    
-    public Creature(string name) : this(name, 1) { }
-
-    
-    public Creature(string name, int level)
+    public Creature(string name, int level = 1)
     {
         Name = name;
         Level = level;
     }
 
-    public Creature()
-    {
+    public Creature() { }
 
-    }
+    public abstract string Greeting();
 
-   
-    public abstract string Info
-    {
-        get;
-    }
+    public abstract string Info { get; }
 
-    public override string ToString()
-    {
-        return $"{GetType().Name.ToUpper()}: {Name} {Info}";
-    }
-
-    public virtual void SayHi()
-    {
-        Console.WriteLine($"Hi! My name is {Name} and I am level {Level}.");
-    }
-
+    public override string ToString() => $"{GetType().Name.ToUpper()}: {Info}";
 
     public void Upgrade()
     {
-        if (Level < 10)
+        if (level < 10)
         {
-            Level++;
+            level++;
         }
     }
 
-    public void Go(Direction direction)
+    public void AssignMap(Map map, Point point)
     {
-        string directionString = direction.ToString().ToLower();
-        Console.WriteLine($"{Name} goes {directionString}.");
+        if (CurrentMap != null)
+        {
+            throw new InvalidOperationException("Blad! - Mapa byla juz wczesniej przydzielona.");
+        }
+        CurrentMap = map;
+        CreaturePos = point;
+        CurrentMap.Add(this, point);
     }
 
-    public void Go(Direction[] directions)
+    public string Go(Direction direction)
     {
-        foreach (var direction in directions)
+        if (CurrentMap != null)
         {
-            Go(direction);
+            var newPos = CurrentMap.Next(CreaturePos, direction);
+            CurrentMap.Move(this, CreaturePos, newPos);
+            CreaturePos = newPos;
+            return $"{direction.ToString().ToLower()}";
+        }
+        else
+        {
+            throw new InvalidOperationException("Blad! - Stwor nie ma jeszcze przydzielonej mapy.");
         }
     }
 
-    public void Go(string directions)
+    public Point GetPos()
     {
-        var parsedDirections = DirectionParser.Parse(directions);
-        Go(parsedDirections);
+        return CreaturePos; 
     }
 }
