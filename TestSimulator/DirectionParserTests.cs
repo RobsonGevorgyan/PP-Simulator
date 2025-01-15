@@ -1,4 +1,5 @@
 using Simulator;
+using Xunit;
 
 namespace TestSimulator;
 

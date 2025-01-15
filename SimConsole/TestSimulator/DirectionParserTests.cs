@@ -1,5 +1,5 @@
 using Simulator;
-
+using Xunit;
 namespace TestSimulator;
 
 public class DirectionParserTests

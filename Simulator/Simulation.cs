@@ -3,6 +3,8 @@ using Simulator;
 
 public class Simulation
 {
+   
+
     /// <summary>
     /// Simulation's map.
     /// </summary>
@@ -114,5 +116,7 @@ public class Simulation
         {
             currentCreatureIndex = 0;
         }
+        
     }
+   
 }

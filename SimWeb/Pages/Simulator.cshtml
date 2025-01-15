@@ -1,0 +1,29 @@
+﻿@page
+@model SimulationModel
+
+<h1>Simulation</h1>
+
+@if (!Model.SimulationFinished)
+{
+    <p>Turn: @Model.Turn </p>
+    <form method="post">
+        <button type="submit" asp-page-handler="NextTurn">Next Turn</button>
+    </form>
+}
+else
+{
+    <p>The simulation has finished!</p>
+}
+
+<div style="display: grid; grid-template-columns: repeat(@Model.MapGrid.GetLength(0), 70px);">
+    @for (int y = 0; y < @Model.MapGrid.GetLength(1); y++)
+    {
+        for (int x = 0; x < @Model.MapGrid.GetLength(0); x++)
+        {
+            var content = Model.MapGrid[x, y] ?? string.Empty;
+            <div style="width: 70px; height: 70px; border: 1px solid black; text-align: center;">
+                @content
+            </div>
+        }
+    }
+</div>
