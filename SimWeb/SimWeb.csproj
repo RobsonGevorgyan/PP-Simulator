@@ -7,6 +7,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Pages\Nowy folder\**" />
+    <Content Remove="Pages\Nowy folder\**" />
+    <EmbeddedResource Remove="Pages\Nowy folder\**" />
+    <None Remove="Pages\Nowy folder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\images\Eagle.png" />
+    <None Include="wwwroot\images\Elf.png" />
+    <None Include="wwwroot\images\Orc.png" />
+    <None Include="wwwroot\images\Ostrich.png" />
+    <None Include="wwwroot\images\Rabbit.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 

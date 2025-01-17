@@ -14,6 +14,7 @@ public class SimulationHistory
     public List<SimulationTurnLog> TurnLogs { get; } = [];
     // store starting positions at index 0
 
+
     public SimulationHistory(Simulation simulation)
     {
         _simulation = simulation ??

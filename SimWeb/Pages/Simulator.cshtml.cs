@@ -5,7 +5,6 @@ using Simulator;
 using Simulator.Maps;
 using Newtonsoft.Json;
 
-
 namespace SimWeb.Pages;
 
 public class SimulationModel : PageModel
@@ -16,9 +15,9 @@ public class SimulationModel : PageModel
 
     public int Turn { get; private set; } = 1;
 
-    public string jsonString { get; private set; } = "";
+    public SimulationTurnLog CurrentLog { get; private set; }
 
-   
+    public SimulationHistory History { get; private set; }
 
     private void InitializeSimulation()
     {
@@ -43,58 +42,68 @@ public class SimulationModel : PageModel
         };
 
         Simulation = new(map, creatures, points, "dlrludlruddurlr");
+        History = new SimulationHistory(Simulation);
+        CurrentLog = History.TurnLogs.FirstOrDefault()!;
     }
 
     public void OnGet()
     {
-
         Turn = HttpContext.Session.GetInt32("Turn") ?? 1;
 
-        if (Simulation == null)
+        if (History == null)
         {
             InitializeSimulation();
-            jsonString = JsonConvert.SerializeObject(Simulation);
         }
-
-        jsonString = HttpContext.Session.GetString("SimulationString") ?? string.Empty;
 
         UpdateMapGrid();
     }
 
     public void OnPostNextTurn()
     {
-
         Turn = HttpContext.Session.GetInt32("Turn") ?? 1;
-        jsonString = HttpContext.Session.GetString("SimulationString") ?? string.Empty;
-        
-        HttpContext.Session.SetString("SimulationString", jsonString);
 
-        if (Simulation == null)
+        if (History == null)
         {
             InitializeSimulation();
-            var jsonString = JsonConvert.SerializeObject(Simulation);
         }
 
-
-       
-            
-        Simulation.Turn();
-        Turn++;
-        HttpContext.Session.SetInt32("Turn", Turn);
-
+        if (Turn < History.TurnLogs.Count - 1)
+        {
+            Turn++;
+            HttpContext.Session.SetInt32("Turn", Turn);
+            CurrentLog = History.TurnLogs[Turn];
+        }
 
         UpdateMapGrid();
+    }
 
-        
+    public void OnPostPreviousTurn()
+    {
+        Turn = HttpContext.Session.GetInt32("Turn") ?? 1;
+
+        if (History == null)
+        {
+            InitializeSimulation();
+        }
+
+        if (Turn > 0)
+        {
+            Turn--;
+            HttpContext.Session.SetInt32("Turn", Turn);
+            CurrentLog = History.TurnLogs[Turn];
+        }
+
+        UpdateMapGrid();
     }
 
     private void UpdateMapGrid()
     {
-        MapGrid = new string[Simulation.Map.SizeX, Simulation.Map.SizeY];
-        foreach (var creature in Simulation.Creatures)
+        MapGrid = new string[History.SizeX, History.SizeY];
+
+        foreach (var symbolEntry in CurrentLog.Symbols)
         {
-            var pos = creature.GetPos();
-            MapGrid[pos.X, pos.Y] = creature.ToString();
+            var position = symbolEntry.Key;
+            MapGrid[position.X, position.Y] = symbolEntry.Value.ToString();
         }
     }
 }
